@@ -172,49 +172,52 @@ fun main() {
 
     val notesVK = NotesVKTask()
 
-    val note1 = Note("Title_ONE", "Text of note_ONE")
-    val note2 = Note("Title_TWO", "Text of note_TWO")
+    val note0 = Note("Title_ONE", "Text of note_ZERO")
+    val note1 = Note("Title_TWO", "Text of note_ONE")
 
 
-    println("Note was create with ID: ${notesVK.add(note1)}")
-    val idFirst = 0
-    val idSecond = 1
+    println("Note was create with ID: ${notesVK.add(note0)}")
+    val idZero = 0
+    val idOne = 1
 
     println("\n Try deleting not existing note...")
 
-    if (notesVK.del(idSecond) == 1) println("$idSecond deleted successfully!") else
-        println("Note $idSecond is not found!")
+    if (notesVK.del(idOne) == 1) println("$idOne deleted successfully!") else
+        println("Note $idOne is not found!")
 
     println("Try deleting existing note")
 
-    if (notesVK.del(idFirst) == 1) println("$idFirst deleted successfully!") else
-        println("Note $idFirst is not found!")
+    if (notesVK.del(idZero) == 1) println("$idZero deleted successfully!") else
+        println("Note $idZero is not found!")
 
-    notesVK.add(note1)
+    notesVK.add(note0)
     println("\nTry getting text from not existing note... ")
-    println("Text from a note index $idSecond : ${notesVK.get(idSecond)?.text}")
+    println("Text from a note index $idOne : ${notesVK.get(idOne)?.text}")
     println("Try getting text from existing note...")
-    println("Text from a note index $idFirst : ${notesVK.get(idFirst)?.text}")
+    println("Text from a note index $idZero : ${notesVK.get(idZero)?.text}")
 
     println("\n Try to change not existing note...")
-    if (notesVK.edit(idSecond, "Title changed", "New note text") == 1)
-        println("Note index $idSecond changed successfully")
-    else println("Note index $idSecond not found!")
+    if (notesVK.edit(idOne, "Title changed", "New note text") == 1)
+        println("Note index $idOne changed successfully")
+    else println("Note index $idOne not found!")
     println("\n Try to change existing note...")
-    if (notesVK.edit(idFirst, "Title changed", "New note text") == 1)
-        println("Note index $idFirst changed successfully")
-    else println("Note index $idFirst not found!")
+    if (notesVK.edit(idZero, "Title changed", "New note text") == 1)
+        println("Note index $idZero changed successfully")
+    else println("Note index $idZero not found!")
 
-    val commentOne = Comment(note1.id, "Uncensored rude comment!", 2)
-    val commentTwo = Comment(note1.id, "Another uncensored rude comment!", 2)
-    val commentThree = Comment(note1.id, "Another uncensored rude comment!", 2)
-    println("Note created successfully id ${notesVK.add(note1)}")
+    val noteId = notesVK.add(note0)
+    println("Note created successfully id ${noteId}")
+
+    val commentOne = Comment(noteId, "Uncensored rude comment!", 2)
+    val commentTwo = Comment(noteId, "Another uncensored rude comment!", 2)
+    val commentThree = Comment(noteId, "The worst comment!", 2)
+
 
     println("\nNew comment was taken an id  ${notesVK.createCom(commentOne)} ${commentOne.id}")
     println("\nNew comment was taken an id  ${notesVK.createCom(commentTwo)} ${commentTwo.id}")
 
-    println("\nAll comments to note $idFirst : ")
-    println(notesVK.getComment(idFirst))
+    println("\nAll comments to note $noteId : ")
+    println(notesVK.getComment(noteId))
 
     println("\n Trying to delete not existed comment...")
     if (notesVK.delRestCom(commentThree, true) == 1)
@@ -225,11 +228,11 @@ fun main() {
         println("Comment delete successfully!") else
         println("Comment not found!")
 
-    println("\n All comments to note $idFirst : ")
-    println(notesVK.getComment(idFirst))
+    println("\n All comments to note $noteId : ")
+    println(notesVK.getComment(noteId))
 
     println("Trying to restore not existing comment... ")
-    if (notesVK.delRestCom(commentTwo, false) == 1)
+    if (notesVK.delRestCom(commentThree, false) == 1)
         println("Comment successfully restored!") else
         println("Comment not found!")
     println("Trying to restore existing comment... ")
@@ -237,8 +240,9 @@ fun main() {
         println("Comment successfully restored!") else
         println("Comment not found!")
 
-    println("\n All comments to note $idFirst : ")
-    println(notesVK.getComment(idFirst))
+    println("\n All comments to note $noteId : ")
+
+    println(notesVK.getComment(noteId))
 }
 
 //ready
@@ -255,11 +259,14 @@ class Note(var title: String, var text: String) {
     var comments: MutableList<Comment> = mutableListOf()
 
     fun createCom(element: Comment): Int? {
-        println("first comment ${this.id} ${element.id}")
-        element.id = this.comments.size
+        val NoteId = this.id
+        var CommentId = element.id
+
+        println("first comment $NoteId $CommentId")
+        CommentId = this.comments.size
 
         this.comments.add(element)
-        println("second comment ${this.comments.size} ${element.id}")
+        println("second comment ${this.comments.size} $CommentId")
         return this.comments.last().id
     }
 
