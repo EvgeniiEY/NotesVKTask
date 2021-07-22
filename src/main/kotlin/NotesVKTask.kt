@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 package ru.netology
-=======
->>>>>>> 784537557c197ff98bf91cc27b4d22d5efa7bbd5
 import java.lang.IndexOutOfBoundsException
 
 
